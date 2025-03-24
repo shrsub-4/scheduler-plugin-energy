@@ -1,0 +1,18 @@
+apiVersion: kubescheduler.config.k8s.io/v1beta13
+kind: KubeSchedulerConfiguration
+clientConnection:
+  kubeconfig: "/etc/kubernetes/scheduler.conf"
+profiles:
+  - schedulerName: default-scheduler
+    plugins:
+      score:
+        enabled:
+          - name: EnergyAware
+        disabled:
+          - name: "*"
+    pluginConfig:
+      - name: EnergyAware
+        args:
+          prometheusAddress: "http://localhost:9090"
+          networkInterface: "wlan0"
+          timeRangeInMinutes: 1
