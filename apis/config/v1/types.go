@@ -297,3 +297,17 @@ type PowerModel struct {
 	// Power = K0 + K1 * e ^(K2 * x) : where x is utilisation
 	// Idle power of node will be K0 + K1
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// Holds arguments used to configure EnergyAware plugin.
+type EnergyAwareArgs struct {
+	metav1.TypeMeta
+
+	// Address of the Prometheus Server
+	Address *string
+	// NetworkInterface to be monitored, assume that nodes OS is homogeneous
+	NetworkInterface *string
+	// TimeRangeInMinutes used to aggregate the network metrics
+	TimeRangeInMinutes *int64
+}

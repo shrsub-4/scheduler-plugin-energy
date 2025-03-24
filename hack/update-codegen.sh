@@ -19,8 +19,8 @@ set -o nounset
 set -o pipefail
 
 SCRIPT_ROOT=$(dirname "${BASH_SOURCE[@]}")/..
-
 TOOLS_DIR=$(realpath ./hack/tools)
+
 TOOLS_BIN_DIR="${TOOLS_DIR}/bin"
 GO_INSTALL=$(realpath ./hack/go-install.sh)
 CONTROLLER_GEN_VER=v0.16.5

@@ -250,3 +250,16 @@ func SetDefaults_SySchedArgs(obj *SySchedArgs) {
 		obj.DefaultProfileName = &DefaultSySchedProfileName
 	}
 }
+
+// SetDefaultEnergyAwareArgs sets the default parameters for the EnergyAware plugin
+func SetDefaultEnergyAwareArgs(args *EnergyAwareArgs) {
+	if args.TimeRangeInMinutes == nil {
+		defaultTime := int64(5)
+		args.TimeRangeInMinutes = &defaultTime
+	}
+
+	if args.NetworkInterface == nil || *args.NetworkInterface == "" {
+		netInterface := "ens192"
+		args.NetworkInterface = &netInterface
+	}
+}
