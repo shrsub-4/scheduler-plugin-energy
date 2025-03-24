@@ -3,13 +3,11 @@ kind: KubeSchedulerConfiguration
 clientConnection:
   kubeconfig: "/etc/kubernetes/scheduler.conf"
 profiles:
-  - schedulerName: default-scheduler
+  - schedulerName: energy-aware-scheduler
     plugins:
       score:
         enabled:
           - name: EnergyAware
-        disabled:
-          - name: "*"
     pluginConfig:
       - name: EnergyAware
         args:
