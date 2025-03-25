@@ -258,7 +258,7 @@ func SetDefaultEnergyAwareArgs(args *EnergyAwareArgs) {
 		args.TimeRangeInMinutes = &defaultTime
 	}
 
-	if args.NetworkInterface == nil || *args.NetworkInterface == "" {
+	if args.NetworkInterface == nil {
 		netInterface := "ens192"
 		args.NetworkInterface = &netInterface
 	}

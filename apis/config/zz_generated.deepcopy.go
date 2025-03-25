@@ -56,21 +56,6 @@ func (in *CoschedulingArgs) DeepCopyObject() runtime.Object {
 func (in *EnergyAwareArgs) DeepCopyInto(out *EnergyAwareArgs) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	if in.Address != nil {
-		in, out := &in.Address, &out.Address
-		*out = new(string)
-		**out = **in
-	}
-	if in.NetworkInterface != nil {
-		in, out := &in.NetworkInterface, &out.NetworkInterface
-		*out = new(string)
-		**out = **in
-	}
-	if in.TimeRangeInMinutes != nil {
-		in, out := &in.TimeRangeInMinutes, &out.TimeRangeInMinutes
-		*out = new(int64)
-		**out = **in
-	}
 	return
 }
 

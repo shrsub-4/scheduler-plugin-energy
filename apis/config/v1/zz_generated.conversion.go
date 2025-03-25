@@ -244,9 +244,15 @@ func Convert_config_CoschedulingArgs_To_v1_CoschedulingArgs(in *config.Coschedul
 }
 
 func autoConvert_v1_EnergyAwareArgs_To_config_EnergyAwareArgs(in *EnergyAwareArgs, out *config.EnergyAwareArgs, s conversion.Scope) error {
-	out.Address = (*string)(unsafe.Pointer(in.Address))
-	out.NetworkInterface = (*string)(unsafe.Pointer(in.NetworkInterface))
-	out.TimeRangeInMinutes = (*int64)(unsafe.Pointer(in.TimeRangeInMinutes))
+	if err := metav1.Convert_Pointer_string_To_string(&in.Address, &out.Address, s); err != nil {
+		return err
+	}
+	if err := metav1.Convert_Pointer_string_To_string(&in.NetworkInterface, &out.NetworkInterface, s); err != nil {
+		return err
+	}
+	if err := metav1.Convert_Pointer_int64_To_int64(&in.TimeRangeInMinutes, &out.TimeRangeInMinutes, s); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -256,9 +262,15 @@ func Convert_v1_EnergyAwareArgs_To_config_EnergyAwareArgs(in *EnergyAwareArgs, o
 }
 
 func autoConvert_config_EnergyAwareArgs_To_v1_EnergyAwareArgs(in *config.EnergyAwareArgs, out *EnergyAwareArgs, s conversion.Scope) error {
-	out.Address = (*string)(unsafe.Pointer(in.Address))
-	out.NetworkInterface = (*string)(unsafe.Pointer(in.NetworkInterface))
-	out.TimeRangeInMinutes = (*int64)(unsafe.Pointer(in.TimeRangeInMinutes))
+	if err := metav1.Convert_string_To_Pointer_string(&in.Address, &out.Address, s); err != nil {
+		return err
+	}
+	if err := metav1.Convert_string_To_Pointer_string(&in.NetworkInterface, &out.NetworkInterface, s); err != nil {
+		return err
+	}
+	if err := metav1.Convert_int64_To_Pointer_int64(&in.TimeRangeInMinutes, &out.TimeRangeInMinutes, s); err != nil {
+		return err
+	}
 	return nil
 }
 
