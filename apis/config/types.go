@@ -307,9 +307,9 @@ type EnergyAwareArgs struct {
 	metav1.TypeMeta `json:",inline"`
 
 	// Address of the Prometheus Server
-	Address *string `json:"prometheusAddress,omitempty"`
+	Address string `json:"prometheusAddress,omitempty"`
 	// NetworkInterface to be monitored, assume that nodes OS is homogeneous
-	NetworkInterface *string `json:"networkInterface,omitempty"`
+	NetworkInterface string `json:"networkInterface,omitempty"`
 	// TimeRangeInMinutes used to aggregate the network metrics
-	TimeRangeInMinutes *int64 `json:"timeRangeInMinutes,omitempty"`
+	TimeRangeInMinutes int64 `json:"timeRangeInMinutes,omitempty"`
 }

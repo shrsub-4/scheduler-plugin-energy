@@ -13,8 +13,9 @@ import (
 
 // Prometheus: Queries
 const (
-	// Node Bandwidth
-	nodeMeasureQueryTemplate = "sum_over_time(node_network_receive_bytes_total{kubernetes_node=\"%s\",device=\"%s\"}[%s])"
+	nodeMeasureQueryTemplate = `
+		sum_over_time(node_network_receive_bytes_total{instance="%s", device="%s"}[%s])
+	`
 )
 
 // Handle interaction with Prometheus
@@ -43,6 +44,7 @@ func NewPrometheus(address, networkInterface string, timeRange time.Duration) *P
 
 func (p *PrometheusHandle) GetNodeBandwidthMeasure(node string) (*model.Sample, error) {
 	query := getNodeBandwidthQuery(node, p.networkInterface, p.timeRange)
+	klog.Infof("[EnergyAware] Prometheus Query: %s", query)
 	res, err := p.query(query)
 	if err != nil {
 		return nil, fmt.Errorf("[EnergyAware] Error querying prometheus: %w", err)
