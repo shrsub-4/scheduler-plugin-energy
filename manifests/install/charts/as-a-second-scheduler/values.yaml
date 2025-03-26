@@ -44,15 +44,8 @@ plugins:
 # Refer to the "pluginConfig" section of manifests/<plugin>/scheduler-config.yaml.
 # For example, for Coscheduling plugin, you want to customize the permit waiting timeout to 10 seconds:
 pluginConfig:
-  - name: Coscheduling
+  - name: EnergyAware
     args:
-      permitWaitingTimeSeconds: 10
-# Or, customize the other plugins
-# - name: NodeResourceTopologyMatch
-#   args:
-#     scoringStrategy:
-#       type: MostAllocated # default is LeastAllocated
-#- name: SySched
-#  args:
-#    defaultProfileNamespace: "default"
-#    defaultProfileName: "full-seccomp"
+      Address: "http://10.101.195.209:9090"
+      NetworkInterface: "wlan0"
+      TimeRangeInMinutes: 1

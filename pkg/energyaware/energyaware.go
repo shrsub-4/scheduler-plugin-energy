@@ -26,13 +26,22 @@ func (pl *EnergyAware) Name() string {
 }
 
 func (e *EnergyAware) Score(ctx context.Context, state *framework.CycleState, pod *v1.Pod, nodeName string) (int64, *framework.Status) {
-	nodeBandwidth, err := e.prometheus.GetNodeBandwidthMeasure(nodeName)
+	nodeInfo, err := e.handle.SnapshotSharedLister().NodeInfos().Get(nodeName)
+	if err != nil {
+		return 0, framework.NewStatus(framework.Error, fmt.Sprintf("[EnergyAware] failed to get node info for %s: %v", nodeName, err))
+	}
+	internalIP, err := getInternalIP(nodeInfo.Node())
+
+	if err != nil {
+		return 0, framework.NewStatus(framework.Error, err.Error())
+	}
+	// Now pass internalIP instead of nodeName to Prometheus query
+	nodeBandwidth, err := e.prometheus.GetNodeBandwidthMeasure(internalIP)
 	if err != nil {
 		return 0, framework.NewStatus(framework.Error, err.Error())
 	}
 
-	// Calculate score based on bandwidth
-	klog.Infof("[EnergyAware] node '%s' bandwidth: %s", nodeName, nodeBandwidth.Value)
+	klog.Infof("[EnergyAware] node '%s' (%s) bandwidth: %s", nodeName, internalIP, nodeBandwidth.Value)
 	return int64(nodeBandwidth.Value), nil
 }
 
@@ -62,10 +71,10 @@ func New(_ context.Context, obj runtime.Object, h framework.Handle) (framework.P
 		return nil, fmt.Errorf("[EnergyAware] want args to be of type EnergyAwareArgs, got %T", obj)
 	}
 
-	klog.Infof("[EnergyAware] args received. NetworkInterface: %s; TimeRangeInMinutes: %d, Address: %s", *args.NetworkInterface, *args.TimeRangeInMinutes, *args.Address)
+	klog.Infof("[EnergyAware] args received. NetworkInterface: %s; TimeRangeInMinutes: %d, Address: %s", args.NetworkInterface, args.TimeRangeInMinutes, args.Address)
 
 	return &EnergyAware{
 		handle:     h,
-		prometheus: NewPrometheus(*args.Address, *args.NetworkInterface, time.Minute*time.Duration(*args.TimeRangeInMinutes)),
+		prometheus: NewPrometheus(args.Address, args.NetworkInterface, time.Minute*time.Duration(args.TimeRangeInMinutes)),
 	}, nil
 }
